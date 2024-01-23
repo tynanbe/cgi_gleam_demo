@@ -1,0 +1,45 @@
+name: test
+
+on:
+  push:
+    branches:
+      - main
+      - "v*.*.*"
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: "26"
+          gleam-version: "0.34"
+          rebar3-version: "3"
+          # elixir-version: "1.15"
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: "v1.x"
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.deno
+            ~/.cache/deno
+          key: ${{ runner.os }}-deno-${{ hashFiles('deno.lock') }}
+
+      - id: cache-gleam
+        uses: actions/cache@v3
+        with:
+          path: build/packages
+          key: ${{ runner.os }}-gleam-${{ hashFiles('manifest.toml') }}
+
+      - if: ${{ !steps.cache-gleam.outputs.cache-hit }}
+        run: gleam deps download
+
+      - run: gleam test
+
+      - run: gleam format --check src test

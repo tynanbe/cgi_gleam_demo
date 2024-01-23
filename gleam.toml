@@ -1,0 +1,41 @@
+name = "cgi_gleam_demo"
+version = "1.0.0"
+description = ""
+licences = ["Apache-2.0"]
+target = "javascript"
+gleam = ">= 0.33.0"
+internal_modules = [
+  "hi/bundle",
+]
+
+[repository]
+repo = "cgi_gleam_demo"
+user = "tynanbe"
+type = "github"
+
+[[links]]
+href = "https://gleam.run/"
+title = "Website"
+
+# For a full reference of all the available options, you can have a look at
+# https://gleam.run/writing-gleam/gleam-toml/.
+
+[dependencies]
+gleam_stdlib = "~> 0.34 or ~> 1.0"
+gleam_http = "~> 3.5"
+cgi = "~> 1.0"
+envoy = "~> 1.0"
+esgleam = "~> 0.4"
+filepath = "~> 0.1"
+glance = "~> 0.8"
+glance_printer = "~> 1.0"
+simplifile = "~> 1.2"
+
+[dev-dependencies]
+gleeunit = "~> 1.0"
+
+[javascript]
+runtime = "deno"
+
+[javascript.deno]
+allow_all = true
